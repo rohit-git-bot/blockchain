@@ -4,6 +4,7 @@
   "description": "Blockchain Project Assignment CA1",
   "main": "index.js",
   "scripts": {
+    "start":"node index.jsp",
     "test": "node index.jsp"
   },
   "repository": {
