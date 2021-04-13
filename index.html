@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Text File Upload</title>
+  </head>
+
+  <body>
+    <h2>Upload file containing Ether addresses</h2>
+
+    <form action="/uploadFile" enctype="multipart/form-data" method="POST">
+      <label for="myFile">Single Text File:</label>
+      <input type="file" name="myFile" accept=".txt"/> <br /><br />
+      <input type="submit" value="Submit" />
+    </form>
+
+  </body>
+
+</html>

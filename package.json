@@ -1,0 +1,31 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain Project Assignment CA1",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.jsp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rohit-git-bot/blockchain-project-assignment.git"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "token",
+    "nodejs"
+  ],
+  "author": "Rohit Kashyap (Student Id - x20196601)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohit-git-bot/blockchain-project-assignment/issues"
+  },
+  "homepage": "https://github.com/rohit-git-bot/blockchain-project-assignment#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "web3": "^1.3.5"
+  }
+}
