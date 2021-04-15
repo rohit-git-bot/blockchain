@@ -49,7 +49,7 @@ app.post("/uploadFile", upload.single("myFile"), (req, res, next) => {
   let totalEtherAddr = multerText.split(os.EOL).length
   
   res.setHeader("Content-Type", "text/html");
-  res.write("<p>Hello World</p>");
+  res.write("<p>Transaction Begin</p>");
   
   
   getcalc(totalEtherAddr).then(value => {
