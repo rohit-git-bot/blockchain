@@ -90,7 +90,7 @@ const privateKey1 = Buffer.from('ab56faae90b595c03f1b278bbd69ee4393023428790130e
 
 // Read the deployed contract - get the addresss from Etherscan 
 // - use your deployed contract address here!
-const contractAddress = '0x0939f0c111bd879e00fd52d223b2822be0c2a722'
+const contractAddress = '0xbad7c235b7e244234b24121b2cb637ac2ffbd5c0'
 
 
 // Reading ABI file from ABI.json
