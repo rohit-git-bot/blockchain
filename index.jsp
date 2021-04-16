@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-
+var BigNumber = require('big-number');
 const Web3 = require('web3')
 const fs = require('fs')
 var Tx = require('ethereumjs-tx').Transaction
@@ -46,7 +46,7 @@ app.post("/uploadFile", upload.single("myFile"), (req, res, next) => {
     fileText: multerText,
   };
   var os = require("os");
-  let totalEtherAddr = multerText.split(os.EOL).length
+  let totalEtherAddr = multerText.split(os.EOL).length-1
   
   res.setHeader("Content-Type", "text/html");
   res.write("<p>Transaction Begin</p>");
@@ -55,10 +55,12 @@ app.post("/uploadFile", upload.single("myFile"), (req, res, next) => {
   getcalc(totalEtherAddr).then(value => {
     const forLoop = async() => {
       for(let val of multerText.split(os.EOL)) {
-        console.log("\n\n")
-        console.log("Ether address = "+val)
-        htmlop.concat("Ether address = "+val)
-        await go(val,value)
+        if(val){
+          console.log("\n\n")
+          console.log("Ether address = "+val)
+          htmlop.concat("Ether address = "+val)
+          await go(val,value)
+        }
 
       }   
     }
@@ -90,7 +92,7 @@ const privateKey1 = Buffer.from('ab56faae90b595c03f1b278bbd69ee4393023428790130e
 
 // Read the deployed contract - get the addresss from Etherscan 
 // - use your deployed contract address here!
-const contractAddress = '0xbad7c235b7e244234b24121b2cb637ac2ffbd5c0'
+const contractAddress = '0x4119054efbf283bc37ff01b2dfbe407335170104'
 
 
 // Reading ABI file from ABI.json
@@ -134,10 +136,10 @@ const transferFunds = async(account1, account2, amount) => {
 
   // console.log("raw hex transaction: " + raw)
 
-  console.log("sending transaction")
+  console.log("sending transaction....")
 
   let minedTransaction = await sendTransaction(raw)
-  console.log("transaction hash returned: " + minedTransaction.transactionHash)
+  console.log("Transaction hash returned: " + minedTransaction.transactionHash)
 
   return `txHash is: ${minedTransaction.transactionHash}`
 }
@@ -175,9 +177,11 @@ const getcalc = async(totalEtherAddr) =>{
 
   const totBalance = await getBalanceOfAcc(mainAccnt)
   console.log("\nTotal Balance for " + mainAccnt + ": " + totBalance)
-  const totTokenCnt = BigInt ( totBalance / 20 )
+  const totTokenCnt = new BigNumber(totBalance).div(20)
+  //totTokenCnt = 
   console.log("5% Token Amount: " + totTokenCnt)
-  let singleTokenCnt = BigInt( Number (totTokenCnt) / totalEtherAddr )
+  console.log("totalEtherAddr: " + totalEtherAddr)
+  let singleTokenCnt = totTokenCnt.div(totalEtherAddr)
   console.log("Single Token count: " + singleTokenCnt)
   return singleTokenCnt
 }

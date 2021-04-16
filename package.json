@@ -4,7 +4,7 @@
   "description": "Blockchain Project Assignment CA1",
   "main": "index.js",
   "scripts": {
-    "start":"node index.jsp",
+    "start": "node index.jsp",
     "test": "node index.jsp"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/rohit-git-bot/blockchain-project-assignment#readme",
   "dependencies": {
+    "big-number": "^2.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "multer": "^1.4.2",

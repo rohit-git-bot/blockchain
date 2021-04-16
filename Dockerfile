@@ -2,6 +2,7 @@ FROM node:9-slim
 WORKDIR /blockchain
 COPY package.json /blockchain
 RUN npm install
+RUN npm i big-number
 RUN npm install ejs
 RUN npm install express
 RUN npm install multer
