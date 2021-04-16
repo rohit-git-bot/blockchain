@@ -12,9 +12,10 @@ const port = 3000;
 
 const storage = multer.memoryStorage();
 
-let htmlop = '<html></html>'
 
-
+let style = '<style>  table {    font-family: arial, sans-serif;    border-collapse: collapse;    width: 100px;  }    td, th {    border: 1px solid #dddddd;    text-align: left;    padding: 8px;  }    tr:nth-child(even) {    background-color: #dddddd;  }  </style>';
+let htmlopMain = '<caption style="caption-side:center">Information</caption><table style="width:100%">';
+let htmlop = '<caption style="caption-side:center">Transaction</caption><table style="width:100%">';
 const fileFilter = (req, file, cb) => {
     if (file.mimetype == 'text/plain') { // checking the MIME type of the uploaded file
         cb(null, true);
@@ -44,38 +45,54 @@ app.post("/uploadFile", upload.single("myFile"), (req, res, next) => {
   
   const result = {
     fileText: multerText,
-  };
+  };  
   var os = require("os");
-  let totalEtherAddr = multerText.split(os.EOL).length
+  let totalEtherAddr = multerText.split(/[\r\n]+/).length
   
   res.setHeader("Content-Type", "text/html");
-  res.write("<p>Transaction Begin</p>");
+  //res.write("<p>Transaction Begin</p>");
   
   
-  getcalc(Number(totalEtherAddr)-1).then(value => {
+  let promise = new Promise(function(resolve, reject) {
+  getcalc(Number(totalEtherAddr)).then(value => {
     const forLoop = async() => {
-      for(let val of multerText.split(os.EOL)) {
+      for(let val of multerText.split(/[\r\n]+/)) {
         if(val){
           console.log("\n\n")
           console.log("Ether address = "+val)
-          htmlop.concat("Ether address = "+val)
+          htmlop += '<tr><td>Ether address </td><td>'+val+'</td></tr>'
           await go(val,value)
         }
 
-      }   
+      }
+      htmlop += '</table>'
+      htmlopMain += '</table><br><br><br>'
+      return res.send(style+ htmlopMain+htmlop);   
     }
     
     forLoop()
 
     
+   // res.write(htmlop.concat('</html>'));
+    
   });
+});
 
-  res.write(htmlop);
+promise.then((res) => {
+  return res.send("Success")
+}).catch((error) => {
+  return res.send("Failure")
+})
 
-  res.end()
+  
+
+  //res.end()
   
   
 });
+
+
+
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
@@ -92,7 +109,7 @@ const privateKey1 = Buffer.from('ab56faae90b595c03f1b278bbd69ee4393023428790130e
 
 // Read the deployed contract - get the addresss from Etherscan 
 // - use your deployed contract address here!
-const contractAddress = '0x4119054efbf283bc37ff01b2dfbe407335170104'
+const contractAddress = '0x6431951889b319d731520b1c874b569f09a87593'
 
 
 // Reading ABI file from ABI.json
@@ -163,8 +180,8 @@ const go = async(destn, tokenamt) => {
     await transferFunds(mainAccnt, destn, tokenamt)
     console.log("Total Balance for (Main Account) " + mainAccnt + " : "+await getBalanceOfAcc(mainAccnt))
     console.log("Total Balance for " + destn + " : "+await getBalanceOfAcc(destn))
-    htmlop.concat("Total Balance for (Main Account) " + mainAccnt + " : "+await getBalanceOfAcc(mainAccnt))
-    htmlop.concat("Total Balance for " + destn + " : "+await getBalanceOfAcc(destn))
+    htmlop += '<tr><td>Total Balance for (Main Account) - ' + mainAccnt + ' </td> <td>'+await getBalanceOfAcc(mainAccnt) +'</td></tr>'
+    htmlop += '<tr><td>Total Balance for ' + destn + ' </td> <td>'+await getBalanceOfAcc(destn)+'</td></tr>'
   }catch (err){
     return console.log(err)
   }
@@ -177,12 +194,16 @@ const getcalc = async(totalEtherAddr) =>{
 
   const totBalance = await getBalanceOfAcc(mainAccnt)
   console.log("\nTotal Balance for " + mainAccnt + ": " + totBalance)
+  htmlopMain += '<tr><td>Total Balance for (main account):'+mainAccnt+'</td><td>'+totBalance+'</td></tr>'
   const totTokenCnt = new BigNumber(totBalance).div(20)
   //totTokenCnt = 
   console.log("5% Token Amount: " + totTokenCnt)
   console.log("totalEtherAddr: " + totalEtherAddr)
+  htmlopMain += '<tr><td>5% Token Amount:</td><td>'+totTokenCnt+'</td></tr>'
+  htmlopMain += '<tr><td>Total Ethereum Accounts</td><td>'+totalEtherAddr+'</td></tr>'
   let singleTokenCnt = totTokenCnt.div(totalEtherAddr)
   console.log("Single Token count: " + singleTokenCnt)
+  htmlopMain += '<tr><td>Token Amount to be transferred (per account)</td><td>'+singleTokenCnt+'</td></tr>'
   return singleTokenCnt
 }
 

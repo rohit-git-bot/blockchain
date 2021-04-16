@@ -3,17 +3,181 @@
 
   <head>
     <meta charset="UTF-8" />
-    <title>Text File Upload</title>
+    <title>Blockchain</title>
+    <style>
+     .input-file-container {
+        position: relative;
+        width: 225px;
+      } 
+      .js .input-file-trigger {
+        display: block;
+        padding: 14px 45px;
+        background: #39D2B4;
+        color: #fff;
+        font-size: 1em;
+        transition: all .4s;
+        cursor: pointer;
+      }
+      .js .input-file {
+        position: absolute;
+        top: 0; left: 0;
+        width: 225px;
+        opacity: 0;
+        padding: 14px 0;
+        cursor: pointer;
+      }
+      .js .input-file:hover + .input-file-trigger,
+      .js .input-file:focus + .input-file-trigger,
+      .js .input-file-trigger:hover,
+      .js .input-file-trigger:focus {
+        background: #34495E;
+        color: #39D2B4;
+      }
+
+      .file-return {
+        margin: 0;
+      }
+      .file-return:not(:empty) {
+        margin: 1em 0;
+      }
+      .js .file-return {
+        font-style: italic;
+        font-size: .9em;
+        font-weight: bold;
+      }
+      .js .file-return:not(:empty):before {
+        content: "Selected file: ";
+        font-style: normal;
+        font-weight: normal;
+      }
+
+
+
+
+
+
+      /* Useless styles, just for demo styles */
+
+      body {
+        font-family: "Open sans", "Segoe UI", "Segoe WP", Helvetica, Arial, sans-serif;
+        color: #7F8C9A;
+        background: #FCFDFD;
+      }
+      h1, h2 {
+        margin-bottom: 5px;
+        font-weight: normal;
+        text-align: center;
+        color:#aaa;
+      }
+      h2 {
+        margin: 5px 0 2em;
+        color: #1ABC9C;
+      }
+      form {
+        width: 225px;
+        margin: 0 auto;
+        text-align:center;
+      }
+      h2 + P {
+        text-align: center;
+      }
+      .txtcenter {
+        margin-top: 4em;
+        font-size: .9em;
+        text-align: center;
+        color: #aaa;
+      }
+      .copy {
+        margin-top: 2em;
+      }
+      .copy a {
+        text-decoration: none;
+        color: #1ABC9C;
+      }
+
+      .button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #f4511e;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 28px;
+      padding: 20px;
+      width: 200px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+      </style>
+
+      <script>
+      
+      document.querySelector("html").classList.add('js');
+
+      
+        var fileInput  = document.querySelector( ".input-file" ),  
+            button     = document.querySelector( ".input-file-trigger" ),
+            the_return = document.querySelector(".file-return");
+              
+        button.addEventListener( "keydown", function( event ) {  
+            if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+                fileInput.focus();  
+            }  
+        });
+        button.addEventListener( "click", function( event ) {
+           fileInput.focus();
+           return false;
+        });  
+        fileInput.addEventListener( "change", function( event ) {  
+            the_return.innerHTML = this.value;  
+        });  </script>
   </head>
-
+  
   <body>
-    <h2>Upload file containing Ether addresses</h2>
+    <h1>Blockchain Assignment</h1>
+    <h2>ERC20 Token Distribution</h2>
 
-    <form action="/uploadFile" enctype="multipart/form-data" method="POST">
-      <label for="myFile">Single Text File:</label>
-      <input type="file" name="myFile" accept=".txt"/> <br /><br />
-      <input type="submit" value="Submit" />
-    </form>
+<form action="/uploadFile" enctype="multipart/form-data" method="POST">
+  <div class="input-file-container">  
+    <input class="input-file" id="my-file" type="file" name="myFile" accept=".txt">
+    <label tabindex="0" for="my-file" class="input-file-trigger">Select a file...</label>
+  </div>
+  <p class="file-return"></p>
+  <div class="input-file-container">  
+    <br><br>
+    <button type="submit" class="button" style="vertical-align:middle" ><span>Submit </span></button>
+  </div>
+</form>
+
+<p class="txtcenter copy"><a href="https://ropsten.etherscan.io/address/0x044733be467402e78c9671784eef7039c433f8f9">Check Contract Info on Etherscan</a><br /></p>
+
+<p class="txtcenter">Rohit Kashyap (x20196601@student.ncirl.ie)</p>
 
   </body>
 
