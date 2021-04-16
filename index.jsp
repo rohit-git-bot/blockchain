@@ -46,13 +46,13 @@ app.post("/uploadFile", upload.single("myFile"), (req, res, next) => {
     fileText: multerText,
   };
   var os = require("os");
-  let totalEtherAddr = multerText.split(os.EOL).length-1
+  let totalEtherAddr = multerText.split(os.EOL).length
   
   res.setHeader("Content-Type", "text/html");
   res.write("<p>Transaction Begin</p>");
   
   
-  getcalc(totalEtherAddr).then(value => {
+  getcalc(Number(totalEtherAddr)-1).then(value => {
     const forLoop = async() => {
       for(let val of multerText.split(os.EOL)) {
         if(val){
